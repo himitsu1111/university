@@ -8,5 +8,6 @@
        http://www.springframework.org/schema/context/spring-context.xsd">
 
        <import resource="datasource-tx-jpa.xml"/>
-       <context:component-scan base-package="com.mycrud.controller"></context:component-scan>
+       <context:component-scan base-package="com.mycrud.controller" />
+       <context:component-scan base-package="com.mycrud.model" />
 </beans>

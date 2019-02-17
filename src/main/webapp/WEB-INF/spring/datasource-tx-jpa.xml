@@ -31,7 +31,7 @@
               </property>
               <!--поиск сущностей в этом пакете-->
               <property name="packagesToScan"
-                        value="com.mycrud"/>
+                        value="com.mycrud.model"/>
               <!--детали конфигурации поставщика постоянства (hibernate) -->
               <property name="jpaProperties">
                      <props>
@@ -55,7 +55,7 @@
 
        </bean>
        <context:annotation-config/>
-       <jpa:repositories base-package="com.mycrud"
+       <jpa:repositories base-package="com.mycrud.controller"
                          entity-manager-factory-ref="emf"
                          transaction-manager-ref="transactionManager"/>
 

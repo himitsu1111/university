@@ -1,6 +1,7 @@
-package com.mycrud.model.POJO;
+package com.mycrud.model;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -9,7 +10,7 @@ import java.util.Set;
  */
 @Entity
 @Table(name = "Faculty")
-public class Faculty {
+public class Faculty implements Serializable {
 
     private Integer id;
     private String name;
@@ -34,7 +35,6 @@ public class Faculty {
     public void setName(String name) {
         this.name = name;
     }
-
 
     private Set<Specialty> specialty = new HashSet<Specialty>();
 

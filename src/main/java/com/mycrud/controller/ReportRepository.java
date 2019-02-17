@@ -1,6 +1,6 @@
 package com.mycrud.controller;
 
-import com.mycrud.model.POJO.Report;
+import com.mycrud.model.Report;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 

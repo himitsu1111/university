@@ -1,10 +1,11 @@
 package com.mycrud.controller;
 
-import com.mycrud.model.POJO.Report;
+import com.mycrud.model.Report;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
 import javax.sql.DataSource;
@@ -15,7 +16,9 @@ import java.util.List;
 /**
  * Created by book on 04.02.2018.
  */
+
 @Repository
+@Transactional
 public class JdbcService {
 
     @Autowired
@@ -29,15 +32,22 @@ public class JdbcService {
     }
 
     public List<Report> getReport() {
-        final String QUERY_SQL = "with abc as (select s.startyear as year, f.name as fac, count(s.name) as stud " +
-                "from students s, specialty sp,faculty f where s.specialtyid = sp.id and " +
-                "sp.facultyid = f.id group by s.startyear, f.name order by s.startyear desc ), " +
-                "totals as (select year, (select 'itogo'::text), sum(stud) from abc group by year order by year desc ) " +
-                "select * from abc union " +
-                "select * from totals order by year, fac";
+        final String QUERY_SQL = "select row_number() OVER (order by s.startyear) as counter, s.startyear as year, f.name as fac, \n" +
+                "\t\tcount(s.name) as stud \n" +
+                "\tfrom \n" +
+                "\t    students s,\n" +
+                "\t    specialty sp,\n" +
+                "\t    faculty f\n" +
+                "\twhere\n" +
+                "\t    s.specialtyid = sp.id\n" +
+                "\tand sp.facultyid = f.id    \n" +
+                "\tgroup by \n" +
+                "\t    rollup(s.startyear, f.name)\n" +
+                "\t    order by s.startyear;";
         List<Report> reportList = this.jdbcTemplate.query(QUERY_SQL, new RowMapper<Report>() {
             public Report mapRow(ResultSet resulSet, int rowNum) throws SQLException {
                 Report report = new Report();
+                report.setId(resulSet.getInt("counter"));
                 report.setYear(resulSet.getString("year"));
                 report.setFac(resulSet.getString("fac"));
                 report.setStud(resulSet.getInt("stud"));

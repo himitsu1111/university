@@ -1,4 +1,4 @@
-package com.mycrud.model.POJO;
+package com.mycrud.model;
 
 import javax.persistence.*;
 import java.util.HashSet;
