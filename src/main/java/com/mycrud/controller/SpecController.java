@@ -41,7 +41,7 @@ public class SpecController {
                             @RequestParam("facName") String facName, Model uiModel) {
 
         String buf = id;
-        //TODO: ��������
+        //TODO: тест кодировки
         if (buf.isEmpty())
             specService.addSpec(name, facName);
         else {
