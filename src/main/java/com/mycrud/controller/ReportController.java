@@ -8,6 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -23,7 +24,7 @@ public class ReportController {
     JdbcService jdbcService;
 
     @RequestMapping(method = RequestMethod.GET)
-    public String list(Model uiModel) {
+    public String list(Model uiModel) throws IOException {
         List<Report> report = jdbcService.getReport();
         for (Report r : report) {
             if (r.getYear() == null && r.getFac() == null) {

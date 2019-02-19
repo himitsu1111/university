@@ -9,10 +9,21 @@
                    value="%d{yyyy-MM-dd HH:mm:ss} %-5p %c{1}:%L - %m%n" />
         </layout>
     </appender>
-
+    <appender name="R" class="org.apache.log4j.RollingFileAppender">
+        <param name="file" value="university.log" />
+        <param name="append" value="true" />
+        <param name="encoding" value="UTF-8" />
+        <param name="MaxFileSize" value="10000KB"/>
+        <!-- Keep one backup file -->
+        <param name="MaxBackupIndex" value="1"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%p %t %c - %m%n"/>
+        </layout>
+    </appender>
     <root>
         <level value="DEBUG" />
         <appender-ref ref="console" />
+        <appender-ref ref="R" />
     </root>
 
 </log4j:configuration>

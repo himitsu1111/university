@@ -1,30 +1,45 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<html>
+<!DOCTYPE html>
 <head>
     <title>Students table</title>
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <meta charset="UTF-8">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </head>
 <body>
-<div id="myModal" class="modal">
-    <div class="modal-content">
-        <span class="close">&times;</span>
-        <form action="/stud" class="form-horizontal col-md-6 col-md-offset-3" method="post">
-            <label for="studNameId">New speciality</label>
-            <input name="studName" class="form-control" id="studNameId" placeholder="Enter name...">
-            <input name="studPhone" class="form-control" id="studPhoneId" placeholder="Enter phone...">
-            <input name="studYear" class="form-control" id="studYearId" placeholder="Enter year...">
-            <label for="sell1">Select speciality</label>
-            <select class="form-control" name="specName" id="sell1">
-                <c:forEach var="spec" items="${specialty}">
+
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Add new speciality</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form action="/stud" class="form-horizontal col-md-6 col-md-offset-3" accept-charset="UTF-8" method="post">
+                    <label for="studNameId">New speciality</label>
+                    <input name="studName" class="form-control" id="studNameId" placeholder="Enter name...">
+                    <input name="studPhone" class="form-control" id="studPhoneId" placeholder="Enter phone...">
+                    <input name="studYear" class="form-control" id="studYearId" placeholder="Enter year...">
+                    <label for="sell1">Select speciality</label>
+                    <select class="form-control" name="specName" id="sell1">
+                    <c:forEach var="spec" items="${specialty}">
                     <option value="${spec.id}">${spec.name}</option>
-                </c:forEach>
-            </select>
-            <input type="hidden" id="studIdId" name="studId">
-            <button type="submit" class="btn btn-default">Create</button>
-        </form>
+                    </c:forEach>
+                    </select>
+                    <input type="hidden" id="studIdId" name="studId">
+                    <button type="submit" class="btn btn-default">Save changes</button>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <br>
+                <br>
+            </div>
+        </div>
     </div>
 </div>
 <h1>Students</h1>
@@ -44,7 +59,7 @@
             <td id="ph${stud.id}">${stud.phone}</td>
             <td id="ye${stud.id}">${stud.startyear}</td>
             <td>${stud.specialty}</td>
-            <td><a href="#" class="btn btn-info" id="myBtn2" name="mBtn2" onclick="editStud(${stud.id})">Edit</a> </td>
+            <td><a href="#" class="btn btn-info" id="myBtn2" name="mBtn2" onclick="editStud(${stud.id})" data-toggle="modal" data-target="#exampleModal">Edit</a> </td>
             <td>
                 <form action="/stud" class="form-horizontal col-md-6 col-md-offset-3" method="post">
                     <input type="hidden" id="studDelId" name="studId" value="${stud.id}">
@@ -64,42 +79,28 @@
         <a href="/" class="btn btn-warning">Home</a>
     </div>
     <div class="col-md-6">
-        <a href="#" class="btn btn-success" id="myBtn">Add new student</a>
+        <a href="#" class="btn btn-success" id="myBtn" data-toggle="modal" data-target="#exampleModal">Add new student</a>
     </div>
 </div>
 <script>
-    var modal = document.getElementById('myModal');
-
-    // Get the button that opens the modal
     var btn = document.getElementById("myBtn");
-    var btn2 = document.getElementById("myBtn2");
-    var btn3 = document.getElementsByName("mBtn2");
 
-    // Get the <span> element that closes the modal
-    var span = document.getElementsByClassName("close")[0];
 
-    var facName = document.getElementsByName("facName");
 
 
     // When the user clicks the button, open the modal
     btn.onclick = function() {
-        var formInput = document.getElementById("studNameId");
-        formInput.value = "";
-        modal.style.display = "block";
+        var formInputName = document.getElementById("studNameId");
+        var formInputPhone = document.getElementById("studPhoneId");
+        var formInputYear = document.getElementById("studYearId");
+        var formInputId = document.getElementById("studIdId");
+
+        formInputName.value = "";
+        formInputId.value = "";
+        formInputPhone.value = "";
+        formInputYear.value = "";
     }
 
-
-    // When the user clicks on <span> (x), close the modal
-    span.onclick = function() {
-        modal.style.display = "none";
-    }
-
-    // When the user clicks anywhere outside of the modal, close it
-    window.onclick = function(event) {
-        if (event.target == modal) {
-            modal.style.display = "none";
-        }
-    }
     function editStud(id) {
         var myTab = document.getElementById(id);
         var myTabPh = document.getElementById("ph" + id);

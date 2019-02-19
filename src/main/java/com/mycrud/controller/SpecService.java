@@ -20,7 +20,6 @@ public class SpecService {
     private EntityManager entityManager;
 
     public List<Specialty> getAllSpecialties() {
-        System.out.println("ORMService queryfindAllUsersJPA is called");
         String query = "from Specialty";
         TypedQuery<Specialty> typedQuery = entityManager.createQuery(query, Specialty.class);
         return typedQuery.getResultList();

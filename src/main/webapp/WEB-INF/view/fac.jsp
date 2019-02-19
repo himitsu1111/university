@@ -1,23 +1,40 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<html>
+<!DOCTYPE html>
 <head>
     <title>Faculties</title>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <meta charset="UTF-8">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
 </head>
 <body>
-<div id="myModal" class="modal">
-  <div class="modal-content">
-    <span class="close">&times;</span>
-    <form action="/fac" class="form-horizontal col-md-6 col-md-offset-3" method="post">
-      <label for="facNameId">New faculty</label>
-      <input name="facName" class="form-control" id="facNameId" placeholder="Enter faculty...">
-      <input type="hidden" id="facIdId" name="facId">
-      <button type="submit" class="btn btn-default">Create</button>
-    </form>
-  </div>
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Add new faculty</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form action="/fac" id="myForm" class="form-horizontal col-md-6 col-md-offset-3" accept-charset="UTF-8" method="post" onsubmit="this.submit(); this.reset(); return false;">
+                    <%--<label for="facNameId">New faculty</label>--%>
+                    <input name="utf8" type="hidden" value="&#x2713;" />
+                    <input name="facName" class="form-control" id="facNameId" placeholder="Enter faculty...">
+                    <input type="hidden" id="facIdId" name="facId">
+                    <button type="submit" class="btn btn-primary" id="submitId" >Save changes</button>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <br>
+                <br>
+            </div>
+        </div>
+    </div>
 </div>
 
 <table class="table table-hover" id="tab1">
@@ -32,7 +49,7 @@
 
     <tr>
       <td id="${fac.id}">${fac.name}</td>
-      <td><a href="#" class="btn btn-info" id="myBtn2" name="mBtn2" onclick="editFac(${fac.id})">Edit</a> </td>
+      <td><a href="#" class="btn btn-info" id="myBtn2" name="mBtn2" onclick="editFac(${fac.id})" data-toggle="modal" data-target="#exampleModal">Edit</a> </td>
       <%--onclick="editFac(${fac.id})"--%>
       <td>
         <form action="/fac" class="form-horizontal col-md-6 col-md-offset-3" method="post">
@@ -51,55 +68,31 @@
         <a href="/" class="btn btn-warning">Home</a>
     </div>
     <div class="col-md-6">
-        <a href="#" class="btn btn-success" id="myBtn">Add new faculty</a>
+        <a href="#" class="btn btn-success" id="myBtn" data-toggle="modal" data-target="#exampleModal">Add new faculty</a>
     </div>
 </div>
 <script>
-  var modal = document.getElementById('myModal');
-
-  // Get the button that opens the modal
-  var btn = document.getElementById("myBtn");
-  var btn2 = document.getElementById("myBtn2");
-  var btn3 = document.getElementsByName("mBtn2");
-
-  // Get the <span> element that closes the modal
-  var span = document.getElementsByClassName("close")[0];
-
-  var facName = document.getElementsByName("facName");
 
 
-  // When the user clicks the button, open the modal
-  btn.onclick = function() {
-    modal.style.display = "block";
-  }
+    var btn = document.getElementById("myBtn");
 
-  btn3.onclick = function() {
-    facName.value = "some text";
-    modal.style.display = "block";
-  }
-
-  // When the user clicks on <span> (x), close the modal
-  span.onclick = function() {
-    modal.style.display = "none";
-  }
-
-  // When the user clicks anywhere outside of the modal, close it
-  window.onclick = function(event) {
-    if (event.target == modal) {
-      modal.style.display = "none";
+    btn.onclick = function() {
+        var formInput = document.getElementById("facNameId");
+        var formInputId = document.getElementById("facIdId");
+        formInputId.value = "";
+        formInput.value = "";
     }
-  }
-  function editFac(id) {
-    var myTab = document.getElementById(id);
-    var formInput = document.getElementById("facNameId");
-    var formInputId = document.getElementById("facIdId");
 
-    console.log(id);
-    formInput.value = myTab.innerHTML;
-    formInputId.value = id;
-    modal.style.display = "block";
 
-  }
+    function editFac(id) {
+        var myTab = document.getElementById(id);
+        var formInput = document.getElementById("facNameId");
+        var formInputId = document.getElementById("facIdId");
+
+        console.log(id);
+        formInput.value = myTab.innerHTML;
+        formInputId.value = id;
+    }
 
 
 

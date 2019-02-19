@@ -21,7 +21,6 @@ public class FacService {
     private EntityManager entityManager;
 
     public List<Faculty> getAllFaculty() {
-        System.out.println("ORMService queryfindAllUsersJPA is called");
         String query = "from Faculty";
         TypedQuery<Faculty> typedQuery = entityManager.createQuery(query, Faculty.class);
         return typedQuery.getResultList();
@@ -32,22 +31,6 @@ public class FacService {
         return entityManager.createNamedQuery(query, Faculty.class).setParameter("name", name).getSingleResult();
     }
 
-    public List<Report> getReport() {
-        String query = "select row_number() OVER (order by s.startyear) as id, s.startyear as year, f.name as fac, \n" +
-                "\t\tcount(s.name) as stud \n" +
-                "\tfrom \n" +
-                "\t    students s,\n" +
-                "\t    specialty sp,\n" +
-                "\t    faculty f\n" +
-                "\twhere\n" +
-                "\t    s.specialtyid = sp.id\n" +
-                "\tand sp.facultyid = f.id    \n" +
-                "\tgroup by \n" +
-                "\t    s.startyear, f.name\n" +
-                "\t    order by s.startyear;";
-        TypedQuery<Report> typedQuery = entityManager.createNamedQuery(query, Report.class);
-        return typedQuery.getResultList();
-    }
 
     public boolean addFaculty(String newFaculty) {
         Faculty faculty = new Faculty();

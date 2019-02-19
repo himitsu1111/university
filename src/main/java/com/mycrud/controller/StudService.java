@@ -22,7 +22,6 @@ public class StudService {
     private EntityManager entityManager;
 
     public List<Students> getAllStudents() {
-        System.out.println("ORMService queryfindAllUsersJPA is called");
         String query = "from Students";
         TypedQuery<Students> typedQuery = entityManager.createQuery(query, Students.class);
         return typedQuery.getResultList();

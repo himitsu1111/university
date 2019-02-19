@@ -6,6 +6,7 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -45,13 +46,14 @@ public class StudController {
 
         String buf = id;
         //TODO:
+        String nameUtf = StringHelper.convertFromUTF8(name);
         if (buf.isEmpty())
-            studService.addStud(name, phone, year, specName);
+            studService.addStud(nameUtf, phone, year, specName);
         else {
-            if (name.equals("TheDelete"))
+            if (nameUtf.equals("TheDelete"))
                 studService.deleteStud(id);
             else
-                studService.updateStud(id, name, phone, year, specName);
+                studService.updateStud(id, nameUtf, phone, year, specName);
         }
 
         List<Students> students = studService.getAllStudents();
@@ -59,5 +61,11 @@ public class StudController {
         uiModel.addAttribute("students", students);
         uiModel.addAttribute("specialty", specialties);
         return "stud";
+    }
+    @ExceptionHandler
+    public String handleException(Exception e, Model uiModel) {
+
+        uiModel.addAttribute("error", e.getMessage());
+        return "error";
     }
 }

@@ -26,7 +26,17 @@
     <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
         <property name="prefix" value="/WEB-INF/view/"/>
         <property name="suffix" value=".jsp"/>
-
+        <property name="contentType" value="text/html; charset=utf-8"/>
+        <property name="viewClass" value="org.springframework.web.servlet.view.JstlView" />
+    </bean>
+    <bean class = "org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">
+        <property name="messageConverters">
+            <array>
+                <bean class = "org.springframework.http.converter.StringHttpMessageConverter">
+                    <property name="supportedMediaTypes" value = "text/plain;charset=UTF-8" />
+                </bean>
+            </array>
+        </property>
     </bean>
     <context:component-scan base-package="com.mycrud.controller"/>
 

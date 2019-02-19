@@ -6,6 +6,7 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -42,13 +43,15 @@ public class SpecController {
 
         String buf = id;
         //TODO: тест кодировки
+        String nameUtf = StringHelper.convertFromUTF8(name);
+
         if (buf.isEmpty())
-            specService.addSpec(name, facName);
+            specService.addSpec(nameUtf, facName);
         else {
-            if (name.equals("TheDelete"))
+            if (nameUtf.equals("TheDelete"))
                 specService.deleteSpec(id);
             else
-                specService.updateSpec(id, name, facName);
+                specService.updateSpec(id, nameUtf, facName);
         }
 
         List<Specialty> specialties = specService.getAllSpecialties();
@@ -56,5 +59,11 @@ public class SpecController {
         uiModel.addAttribute("faculties", faculties);
         uiModel.addAttribute("specialty", specialties);
         return "spec";
+    }
+    @ExceptionHandler
+    public String handleException(Exception e, Model uiModel) {
+
+        uiModel.addAttribute("error", e.getMessage());
+        return "error";
     }
 }
