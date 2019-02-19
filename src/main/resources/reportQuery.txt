@@ -1,0 +1,14 @@
+select row_number() OVER (order by s.startyear) as counter,
+		s.startyear as year, 
+		f.name as fac, 
+		count(s.name) as stud 
+	from 
+	    students s,
+	    specialty sp,
+	    faculty f
+	where
+	    s.specialtyid = sp.id
+	and sp.facultyid = f.id    
+	group by 
+	    rollup(s.startyear, f.name)
+	    order by s.startyear;
